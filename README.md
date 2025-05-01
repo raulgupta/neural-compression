@@ -29,6 +29,17 @@ Our implementation achieves impressive compression results:
 - **Average SSIM**: 0.7581
 - **BD-Rate Savings**: -88.67% compared to ASTC
 
+## 🖼️ Texture Sets
+
+This implementation uses high-quality PBR texture sets from [AmbientCG](https://ambientcg.com/), a free and CC0 licensed resource for 3D artists and developers. The texture sets include:
+
+- **Diffuse/Albedo Maps**: Base color information
+- **Normal Maps**: Surface detail for realistic lighting
+- **Displacement Maps**: Height information for surface detail
+- **Roughness Maps**: Surface smoothness/roughness properties
+
+These multi-channel texture sets provide an excellent test case for our compression algorithm, demonstrating its ability to handle diverse texture types while maintaining visual fidelity across all channels.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
