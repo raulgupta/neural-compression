@@ -1,0 +1,64 @@
+# Default configuration for neural texture compression
+
+# Dataset configuration
+dataset:
+  texture_dir: "data/textures"  # Directory containing texture sets
+  crop_size: 256                # Initial crop size for training
+  batch_size: 4                 # Batch size for training
+  num_workers: 4                # Number of workers for data loading
+
+# Model configuration
+model:
+  # Global Transformer (Encoder)
+  global_transformer:
+    channels: [64, 128, 256]    # Channel dimensions for each layer
+    downscale_factor: 8         # Total downscaling factor (2^3)
+    use_attention: false        # Whether to use attention blocks
+
+  # Grid Constructor
+  grid_constructor:
+    grid_channels: [16, 16]     # Channel dimensions for G0 and G1
+    quantization_bits: 4        # Number of bits for quantization
+
+  # Texture Synthesizer (Decoder)
+  texture_synthesizer:
+    hidden_dim: 32              # Hidden dimension
+    num_residual_blocks: 4      # Number of residual blocks
+    positional_encoding_levels: 10  # Number of levels for positional encoding
+
+# Training configuration
+training:
+  stages:
+    - crop_size: 256
+      learning_rate: 1.0e-4
+      steps: 160000
+      mip_levels: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+      quantization: "uniform_noise"
+    
+    - crop_size: 512
+      learning_rate: 5.0e-5
+      steps: 80000
+      mip_levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      quantization: "uniform_noise"
+    
+    - crop_size: 512
+      learning_rate: 1.0e-5
+      steps: 20000
+      mip_levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      quantization: "ste"
+
+  optimizer:
+    type: "adam"
+    beta1: 0.9
+    beta2: 0.999
+    weight_decay: 0.0
+
+  loss:
+    type: "mse"                 # Mean squared error
+    lambda_rate: 0.0            # Weight for rate term (0 for distortion-only)
+
+# Evaluation configuration
+evaluation:
+  metrics: ["psnr", "ssim"]     # Metrics to compute
+  compare_with: ["astc"]        # Methods to compare with
+  astc_block_sizes: [6, 8, 10, 12]  # ASTC block sizes to evaluate

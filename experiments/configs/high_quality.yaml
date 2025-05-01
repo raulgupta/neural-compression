@@ -1,0 +1,65 @@
+# High quality configuration for neural texture compression
+
+# Dataset configuration
+dataset:
+  texture_dir: "data/textures"  # Directory containing texture sets
+  crop_size: 256                # Initial crop size for training
+  batch_size: 4                 # Batch size for training
+  num_workers: 4                # Number of workers for data loading
+
+# Model configuration
+model:
+  # Global Transformer (Encoder)
+  global_transformer:
+    channels: [64, 128, 256, 512]  # Channel dimensions for each layer (larger)
+    downscale_factor: 8         # Total downscaling factor (2^3)
+    use_attention: true         # Use attention blocks for better quality
+
+  # Grid Constructor
+  grid_constructor:
+    grid_channels: [32, 32]     # Channel dimensions for G0 and G1 (larger)
+    quantization_bits: 8        # Higher bit depth for better quality
+
+  # Texture Synthesizer (Decoder)
+  texture_synthesizer:
+    hidden_dim: 64              # Larger hidden dimension
+    num_residual_blocks: 8      # More residual blocks
+    positional_encoding_levels: 16  # More levels for positional encoding
+
+# Training configuration
+training:
+  stages:
+    - crop_size: 256
+      learning_rate: 1.0e-4
+      steps: 200000             # More training steps
+      mip_levels: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+      quantization: "uniform_noise"
+    
+    - crop_size: 512
+      learning_rate: 5.0e-5
+      steps: 100000             # More training steps
+      mip_levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      quantization: "uniform_noise"
+    
+    - crop_size: 1024           # Larger crop size for final stage
+      learning_rate: 1.0e-5
+      steps: 50000              # More training steps
+      mip_levels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      quantization: "ste"
+
+  optimizer:
+    type: "adam"
+    beta1: 0.9
+    beta2: 0.999
+    weight_decay: 1.0e-5        # Small weight decay for regularization
+
+  loss:
+    type: "mse+lpips"           # Combined MSE and perceptual loss
+    lambda_lpips: 0.1           # Weight for perceptual term
+    lambda_rate: 0.0            # Weight for rate term (0 for distortion-only)
+
+# Evaluation configuration
+evaluation:
+  metrics: ["psnr", "ssim", "lpips"]  # Additional perceptual metric
+  compare_with: ["astc", "ntc"]       # Compare with NTC as well
+  astc_block_sizes: [4, 6, 8, 10, 12]  # Additional smaller block size

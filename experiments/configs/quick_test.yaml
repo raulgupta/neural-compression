@@ -1,0 +1,64 @@
+# Quick test configuration for neural texture compression
+
+# Dataset configuration
+dataset:
+  texture_dir: "data/textures"  # Directory containing texture sets
+  crop_size: 256                # Initial crop size for training
+  batch_size: 4                 # Batch size for training
+  num_workers: 4                # Number of workers for data loading
+
+# Model configuration
+model:
+  # Global Transformer (Encoder) - Simplified
+  global_transformer:
+    channels: [32, 64, 128]     # Reduced channel dimensions
+    downscale_factor: 8         # Total downscaling factor (2^3)
+    use_attention: false        # Whether to use attention blocks
+
+  # Grid Constructor - Simplified
+  grid_constructor:
+    grid_channels: [16, 16]       # Reduced grid channels
+    quantization_bits: 4        # Number of bits for quantization
+
+  # Texture Synthesizer (Decoder) - Simplified
+  texture_synthesizer:
+    hidden_dim: 16              # Reduced hidden dimension
+    num_residual_blocks: 2      # Fewer residual blocks
+    positional_encoding_levels: 6  # Fewer levels for positional encoding
+
+# Training configuration
+training:
+  stages:
+    - crop_size: 256
+      learning_rate: 1.0e-4
+      steps: 5000               # Drastically reduced steps
+      mip_levels: [0, 1, 2, 3]  # Fewer mip levels
+      quantization: "uniform_noise"
+    
+    - crop_size: 256            # Keep same crop size for speed
+      learning_rate: 5.0e-5
+      steps: 3000               # Drastically reduced steps
+      mip_levels: [0, 1, 2, 3, 4]
+      quantization: "uniform_noise"
+    
+    - crop_size: 256            # Keep same crop size for speed
+      learning_rate: 1.0e-5
+      steps: 2000               # Drastically reduced steps
+      mip_levels: [0, 1, 2, 3, 4]
+      quantization: "ste"
+
+  optimizer:
+    type: "adam"
+    beta1: 0.9
+    beta2: 0.999
+    weight_decay: 0.0
+
+  loss:
+    type: "mse"                 # Mean squared error
+    lambda_rate: 0.0            # Weight for rate term (0 for distortion-only)
+
+# Evaluation configuration
+evaluation:
+  metrics: ["psnr", "ssim"]     # Metrics to compute
+  compare_with: ["astc"]        # Methods to compare with
+  astc_block_sizes: [8, 12]     # Fewer ASTC block sizes to evaluate
