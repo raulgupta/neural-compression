@@ -1,10 +1,8 @@
-# Neural Graphics Texture Compression
-
-![Grid Features](../results/custom_evaluation/grid_features.png)
+# 💻 Neural Graphics Texture Compression
 
 A PyTorch implementation of the asymmetric autoencoder framework for neural texture compression as described in the paper ["Neural Graphics Texture Compression Supporting Random Access"](https://arxiv.org/abs/2407.00021) by Farhadzadeh et al.
 
-## 🌟 Features
+## 🎛 Features
 
 - **Asymmetric Autoencoder Framework**: Efficient neural compression architecture
 - **Multi-Channel Support**: Compress texture sets with any number of channels
@@ -43,7 +41,7 @@ Our implementation achieves impressive compression results:
 
 ```bash
 # Clone the repository
-git clone https://github.com/rahulgupta/neural-compression.git
+git clone https://github.com/raulgupta/neural-compression.git
 cd neural-compression
 
 # Make the setup script executable
