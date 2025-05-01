@@ -1,0 +1,53 @@
+Model checkpoint: /home/ubuntu/results/quick_test/20250430-050709/checkpoint_9500.pth
+Number of input channels: 15
+Compression ratio: 240.0:1
+Bits per pixel per channel: 0.1333
+
+Grid channels: G0=16, G1=16
+Quantization bits: 4
+
+Texture Results:
+
+texture_0:
+  Average PSNR: 24.75 dB
+  Average SSIM: 0.6681
+  Per-mip metrics:
+    Mip 0: PSNR=23.22 dB, SSIM=0.5621
+    Mip 1: PSNR=25.38 dB, SSIM=0.6770
+    Mip 2: PSNR=25.70 dB, SSIM=0.7330
+    Mip 3: PSNR=25.52 dB, SSIM=0.7380
+    Mip 4: PSNR=23.92 dB, SSIM=0.6302
+
+texture_1:
+  Average PSNR: 31.05 dB
+  Average SSIM: 0.7717
+  Per-mip metrics:
+    Mip 0: PSNR=29.40 dB, SSIM=0.6594
+    Mip 1: PSNR=31.92 dB, SSIM=0.7950
+    Mip 2: PSNR=32.25 dB, SSIM=0.8190
+    Mip 3: PSNR=31.87 dB, SSIM=0.8131
+    Mip 4: PSNR=29.81 dB, SSIM=0.7719
+
+texture_2:
+  Average PSNR: 26.31 dB
+  Average SSIM: 0.7251
+  Per-mip metrics:
+    Mip 0: PSNR=25.03 dB, SSIM=0.6064
+    Mip 1: PSNR=27.12 dB, SSIM=0.7384
+    Mip 2: PSNR=27.60 dB, SSIM=0.8058
+    Mip 3: PSNR=27.19 dB, SSIM=0.8114
+    Mip 4: PSNR=24.62 dB, SSIM=0.6634
+
+texture_3:
+  Average PSNR: 27.22 dB
+  Average SSIM: 0.8677
+  Per-mip metrics:
+    Mip 0: PSNR=26.24 dB, SSIM=0.9094
+    Mip 1: PSNR=28.70 dB, SSIM=0.9267
+    Mip 2: PSNR=26.53 dB, SSIM=0.9109
+    Mip 3: PSNR=27.45 dB, SSIM=0.8241
+    Mip 4: PSNR=27.17 dB, SSIM=0.7672
+
+Overall Metrics:
+  Average PSNR across all textures: 27.33 dB
+  Average SSIM across all textures: 0.7581

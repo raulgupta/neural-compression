@@ -1,0 +1,70 @@
+dataset:
+  batch_size: 4
+  crop_size: 256
+  num_workers: 4
+  texture_dir: data/textures
+evaluation:
+  astc_block_sizes:
+  - 8
+  - 12
+  compare_with:
+  - astc
+  metrics:
+  - psnr
+  - ssim
+model:
+  global_transformer:
+    channels:
+    - 32
+    - 64
+    - 128
+    downscale_factor: 8
+    use_attention: false
+  grid_constructor:
+    grid_channels:
+    - 8
+    - 8
+    quantization_bits: 4
+  texture_synthesizer:
+    hidden_dim: 16
+    num_residual_blocks: 2
+    positional_encoding_levels: 6
+training:
+  loss:
+    lambda_rate: 0.0
+    type: mse
+  optimizer:
+    beta1: 0.9
+    beta2: 0.999
+    type: adam
+    weight_decay: 0.0
+  stages:
+  - crop_size: 256
+    learning_rate: 0.0001
+    mip_levels:
+    - 0
+    - 1
+    - 2
+    - 3
+    quantization: uniform_noise
+    steps: 5000
+  - crop_size: 256
+    learning_rate: 5.0e-05
+    mip_levels:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    quantization: uniform_noise
+    steps: 3000
+  - crop_size: 256
+    learning_rate: 1.0e-05
+    mip_levels:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    quantization: ste
+    steps: 2000
